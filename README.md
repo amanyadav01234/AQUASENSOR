@@ -27,31 +27,6 @@ The backend is built entirely using Python's standard library, while the fronten
 | ![Sign In](aquasense-pro/docs/screenshots/signin.png) | ![Create Account](aquasense-pro/docs/screenshots/signup.png) |
 
 
-## Additional Application Screenshots
-
-### Dashboard Views
-![Screenshot 1](aquasense-pro/docs/screenshots/aquasense-additional-screenshots/additional-screenshot-01.png)
-
-![Screenshot 2](aquasense-pro/docs/screenshots/aquasense-additional-screenshots/additional-screenshot-02.png)
-
-![Screenshot 3](aquasense-pro/docs/screenshots/aquasense-additional-screenshots/additional-screenshot-03.png)
-
-### Tank Management
-![Screenshot 4](aquasense-pro/docs/screenshots/aquasense-additional-screenshots/additional-screenshot-04.png)
-
-![Screenshot 5](aquasense-pro/docs/screenshots/aquasense-additional-screenshots/additional-screenshot-05.png)
-
-### Alerts and Settings
-![Screenshot 6](aquasense-pro/docs/screenshots/aquasense-additional-screenshots/additional-screenshot-06.png)
-
-![Screenshot 7](aquasense-pro/docs/screenshots/aquasense-additional-screenshots/additional-screenshot-07.png)
-
-![Screenshot 8](aquasense-pro/docs/screenshots/aquasense-additional-screenshots/additional-screenshot-08.png)
-
-### More Application Views
-![Screenshot 9](aquasense-pro/docs/screenshots/aquasense-additional-screenshots/additional-screenshot-09.png)
-
-![Screenshot 10](aquasense-pro/docs/screenshots/aquasense-additional-screenshots/additional-screenshot-10.png)
 
 
 >>>>>>> 78a31c7 (Updated code)
