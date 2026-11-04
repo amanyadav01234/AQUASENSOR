@@ -6,11 +6,36 @@ The application also provides a REST API and an automated test suite to ensure e
 
 The backend is built entirely using Python's standard library, while the frontend uses plain HTML, CSS, and JavaScript. No external frontend libraries are required.
 
+<<<<<<< HEAD
+=======
+## Screenshots
+
+### Live Monitoring Dashboard
+![Live Dashboard](aquasense-pro/docs/screenshots/dashboard.png)
+
+### Multi-Tank Management & Alerts
+| Multi-Tank Overview | Low-Level Alert History |
+| :---: | :---: |
+| ![Multi-Tank Overview](aquasense-pro/docs/screenshots/tanks.png) | ![Alert History](aquasense-pro/docs/screenshots/alerts.png) |
+
+### Tank Settings & Preferences
+![Tank Settings](aquasense-pro/docs/screenshots/settings.png)
+
+### User Authentication
+| Sign In | Create Account |
+| :---: | :---: |
+| ![Sign In](aquasense-pro/docs/screenshots/signin.png) | ![Create Account](aquasense-pro/docs/screenshots/signup.png) |
+
+>>>>>>> 78a31c7 (Updated code)
 ## Quick Start
 
 You only need Python 3.9 or above to run the application.
 
 ```bash
+<<<<<<< HEAD
+=======
+cd aquasense-pro
+>>>>>>> 78a31c7 (Updated code)
 python server.py
 ```
 
@@ -19,12 +44,20 @@ Open `http://localhost:8000` in your browser.
 For a live demonstration with simulated readings:
 
 ```bash
+<<<<<<< HEAD
+=======
+cd aquasense-pro
+>>>>>>> 78a31c7 (Updated code)
 AQUA_SIMULATE=1 python server.py
 ```
 
 To run the automated tests:
 
 ```bash
+<<<<<<< HEAD
+=======
+cd aquasense-pro
+>>>>>>> 78a31c7 (Updated code)
 pip install pytest
 pytest -v
 ```
@@ -34,6 +67,10 @@ The project currently includes 75 tests.
 To run using Docker:
 
 ```bash
+<<<<<<< HEAD
+=======
+cd aquasense-pro
+>>>>>>> 78a31c7 (Updated code)
 docker build -t aquasense .
 docker run -p 8000:8000 -e AQUA_SECRET=change-me -v aqua:/data aquasense
 ```
@@ -118,6 +155,7 @@ Unknown devices return HTTP 404, while offline devices return HTTP 503.
 ## Project Structure
 
 ```text
+<<<<<<< HEAD
 server.py              Backend server and business logic
 web/
   index.html           Login, registration and dashboard
@@ -131,6 +169,24 @@ tests/
   test_server.py       Integration tests
   test_device_api.py   API tests with mocked responses
 Dockerfile             Docker configuration
+=======
+aquasense-pro/
+  server.py              Backend server and business logic
+  web/
+    index.html           Login, registration and dashboard
+    app.css              Styling and themes
+    app.js               Frontend functionality
+  data/
+    readings.json        Initial mock tank data
+  docs/
+    screenshots/         Application UI screenshots and previews
+  device_client.py       Device API client
+  tests/
+    test_logic.py        Unit tests
+    test_server.py       Integration tests
+    test_device_api.py   API tests with mocked responses
+  Dockerfile             Docker configuration
+>>>>>>> 78a31c7 (Updated code)
 ```
 
 ## Part B – Test Plan

@@ -6,6 +6,24 @@ The application also provides a REST API and an automated test suite to ensure e
 
 The backend is built entirely using Python's standard library, while the frontend uses plain HTML, CSS, and JavaScript. No external frontend libraries are required.
 
+## Screenshots
+
+### Live Monitoring Dashboard
+![Live Dashboard](docs/screenshots/dashboard.png)
+
+### Multi-Tank Management & Alerts
+| Multi-Tank Overview | Low-Level Alert History |
+| :---: | :---: |
+| ![Multi-Tank Overview](docs/screenshots/tanks.png) | ![Alert History](docs/screenshots/alerts.png) |
+
+### Tank Settings & Preferences
+![Tank Settings](docs/screenshots/settings.png)
+
+### User Authentication
+| Sign In | Create Account |
+| :---: | :---: |
+| ![Sign In](docs/screenshots/signin.png) | ![Create Account](docs/screenshots/signup.png) |
+
 ## Quick Start
 
 You only need Python 3.9 or above to run the application.
@@ -125,6 +143,8 @@ web/
   app.js               Frontend functionality
 data/
   readings.json        Initial mock tank data
+docs/
+  screenshots/         Application UI screenshots and previews
 device_client.py       Device API client
 tests/
   test_logic.py        Unit tests
