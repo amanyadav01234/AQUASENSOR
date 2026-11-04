@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>AquaSense | Water tank monitoring</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230F4C5C'/%3E%3Cpath d='M16 6c4 5 7 8.5 7 12a7 7 0 0 1-14 0c0-3.500 3-7 7-12z' fill='%232BB3C0'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+
+<!-- ============ AUTH ============ -->
+<div id="auth" class="auth hide">
+  <aside class="auth-art">
+    <div class="brand"><svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="currentColor" opacity=".18"/><path d="M16 6c4 5 7 8.500 7 12a7 7 0 0 1-14 0c0-3.500 3-7 7-12z" fill="#fff"/></svg>AquaSense</div>
+    <div class="art-body">
+      <h1>Know your water level before it becomes a problem.</h1>
+      <p>Live tank levels, an alert the moment a tank drops below its limit, and pump control in one place.</p>
+      <svg class="art-tank" viewBox="0 0 120 150" aria-hidden="true">
+        <defs><clipPath id="artclip"><rect x="10" y="10" width="100" height="130" rx="14"/></clipPath></defs>
+        <rect x="10" y="10" width="100" height="130" rx="14" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="3"/>
+        <g clip-path="url(#artclip)"><g class="art-water"><path d="M-120 0q30-14 60 0t60 0 60 0 60 0V160H-120z" fill="#7ad7e0" opacity=".85"/></g></g>
+        <line x1="10" x2="110" y1="114" y2="114" stroke="#fff" stroke-dasharray="4 4" stroke-opacity=".8"/>
+        <text x="114" y="118" fill="#fff" font-size="9" opacity=".9">20%</text>
+      </svg>
+    </div>
+    <p class="art-foot">Built for housing societies, campuses and facility teams.</p>
+  </aside>
+  <main class="auth-panel">
+    <div class="auth-box">
+      <form id="loginForm" novalidate>
+        <h2>Sign in</h2>
+        <p class="sub">Welcome back. Enter your details to open the dashboard.</p>
+        <label for="le">Email</label>
+        <input id="le" type="email" autocomplete="email" required>
+        <label for="lp">Password</label>
+        <div class="pw"><input id="lp" type="password" autocomplete="current-password" required><button type="button" class="eye" data-eye="lp" aria-label="Show password">Show</button></div>
+        <label class="check"><input type="checkbox" id="remember" checked> Keep me signed in on this device</label>
+        <div class="err" id="lerr" role="alert"></div>
+        <button class="btn primary full" id="lbtn">Sign in</button>
+        <p class="swap">New to AquaSense? <button type="button" class="link" data-go="signup">Create an account</button></p>
+      </form>
+      <form id="signupForm" class="hide" novalidate>
+        <h2>Create your account</h2>
+        <p class="sub">Set up takes under a minute.</p>
+        <label for="sn">Full name</label>
+        <input id="sn" autocomplete="name" required>
+        <label for="se">Email</label>
+        <input id="se" type="email" autocomplete="email" required>
+        <label for="sp">Password</label>
+        <div class="pw"><input id="sp" type="password" autocomplete="new-password" required><button type="button" class="eye" data-eye="sp" aria-label="Show password">Show</button></div>
+        <div class="meter" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+        <p class="hint" id="pwhint">Use 8+ characters with a letter and a number.</p>
+        <label for="sc">Confirm password</label>
+        <input id="sc" type="password" autocomplete="new-password" required>
+        <div class="err" id="serr" role="alert"></div>
+        <button class="btn primary full" id="sbtn">Create account</button>
+        <p class="swap">Already have an account? <button type="button" class="link" data-go="login">Sign in</button></p>
+      </form>
+    </div>
+  </main>
+</div>
+
+<!-- ============ APP ============ -->
+<div id="app" class="shell hide">
+  <nav class="side" aria-label="Main">
+    <div class="brand"><svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="currentColor" opacity=".18"/><path d="M16 6c4 5 7 8.500 7 12a7 7 0 0 1-14 0c0-3.500 3-7 7-12z" fill="#fff"/></svg><span>AquaSense</span></div>
+    <a href="#overview" data-view="overview"><svg viewBox="0 0 24 24"><path d="M4 13h6V4H4zM14 20h6V4h-6zM4 20h6v-4H4z"/></svg><span>Overview</span></a>
+    <a href="#devices" data-view="devices"><svg viewBox="0 0 24 24"><path d="M6 3h12v18H6zM6 9h12M6 15h12"/></svg><span>Tanks</span></a>
+    <a href="#alerts" data-view="alerts"><svg viewBox="0 0 24 24"><path d="M12 3l10 18H2zM12 10v5M12 18v.5"/></svg><span>Alerts</span><b id="alertCount" class="pill hide">0</b></a>
+    <a href="#settings" data-view="settings"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></svg><span>Settings</span></a>
+  </nav>
+
+  <div class="content">
+    <header class="top">
+      <div class="top-l">
+        <label for="deviceSelect" class="sr">Tank</label>
+        <select id="deviceSelect" aria-label="Select tank"></select>
+        <span class="live" id="live"><i></i><span id="liveText">Connecting</span></span>
+      </div>
+      <div class="top-r">
+        <button class="btn ghost icon" id="themeBtn" aria-label="Switch theme" title="Switch theme">Theme</button>
+        <div class="who"><span class="avatar" id="avatar">A</span><span id="who"></span></div>
+        <button class="btn ghost" id="logout">Sign out</button>
+      </div>
+    </header>
+
+    <main class="page">
+      <!-- Overview -->
+      <section id="view-overview" class="view">
+        <div id="banner" class="banner" role="status" aria-live="polite"></div>
+        <div class="hero">
+          <div class="gauge card">
+            <svg id="gauge" viewBox="0 0 160 300" role="img" aria-label="Tank level gauge">
+              <defs><clipPath id="tankclip"><rect x="20" y="20" width="120" height="260" rx="18"/></clipPath></defs>
+              <rect x="20" y="20" width="120" height="260" rx="18" class="tank-bg"/>
+              <g clip-path="url(#tankclip)"><g id="water" class="water"><g class="wave"><path d="M-160 0q40-12 80 0t80 0 80 0 80 0 80 0 80 0V300H-160z"/></g></g></g>
+              <rect x="20" y="20" width="120" height="260" rx="18" class="tank-line"/>
+              <line id="thrLine" x1="12" x2="148" y1="228" y2="228" class="thr"/>
+              <text id="thrText" x="150" y="232" class="thr-t">20%</text>
+            </svg>
+            <div class="gauge-read">
+              <div class="big" id="curVal">--</div>
+              <div class="muted" id="curSub">Waiting for data</div>
+              <div class="muted small" id="curLitres"></div>
+            </div>
+          </div>
+          <div class="stats">
+            <div class="card stat"><div class="k">Today's minimum</div><div class="v" id="minVal">--</div><div class="s" id="minSub"></div></div>
+            <div class="card stat"><div class="k">Today's maximum</div><div class="v" id="maxVal">--</div><div class="s" id="maxSub"></div></div>
+            <div class="card stat"><div class="k">Trend</div><div class="v" id="trendVal">--</div><div class="s" id="trendSub"></div></div>
+            <div class="card stat">
+              <div class="k">Pump</div><div class="v" id="pumpVal">--</div><div class="s" id="pumpSub"></div>
+              <div class="seg" role="group" aria-label="Pump mode" id="pumpSeg"><button data-mode="auto">Auto</button><button data-mode="on">On</button><button data-mode="off">Off</button></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="split">
+          <div class="card">
+            <div class="card-h"><h3>Level history</h3>
+              <div class="seg small" role="group" aria-label="Chart range" id="rangeSeg"><button data-range="today" class="on">Latest day</button><button data-range="all">All data</button></div></div>
+            <div class="chart-wrap" id="chartWrap"><div id="chart"></div><div id="tip" class="tip hide"></div></div>
+          </div>
+          <div class="card">
+            <h3>Low-level events</h3>
+            <p class="muted small" id="evtSub"></p>
+            <ul class="events" id="events"></ul>
+            <div class="sim">
+              <h3>Simulate a reading</h3>
+              <p class="muted small">Adds a reading to this tank so you can demo the alert live.</p>
+              <div class="sim-row"><input id="simLevel" type="range" min="0" max="100" value="50" aria-label="Level percent"><output id="simOut">50%</output></div>
+              <div class="sim-btns"><button class="btn primary" id="simAdd">Add reading</button><button class="btn ghost" data-preset="15">Drain to 15%</button><button class="btn ghost" data-preset="85">Refill to 85%</button></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-h"><h3>Recent readings</h3><button class="btn ghost" id="exportBtn">Export CSV</button></div>
+          <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Time</th><th>Level</th><th>Status</th></tr></thead><tbody id="readRows"></tbody></table></div>
+        </div>
+      </section>
+
+      <!-- Tanks -->
+      <section id="view-devices" class="view hide">
+        <div class="head"><h2>Tanks</h2><p class="muted">All connected tanks. Select one to open its dashboard.</p></div>
+        <div class="dev-grid" id="devGrid"></div>
+      </section>
+
+      <!-- Alerts -->
+      <section id="view-alerts" class="view hide">
+        <div class="head"><h2>Alerts</h2><p class="muted">Every period when a tank stayed below its alert limit.</p></div>
+        <div class="card">
+          <div class="card-h"><div class="seg small" id="alertFilter" role="group" aria-label="Filter"><button data-f="all" class="on">All</button><button data-f="active">Active</button><button data-f="resolved">Resolved</button></div></div>
+          <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Tank</th><th>Started</th><th>Lowest</th><th>Duration</th><th>Status</th></tr></thead><tbody id="alertRows"></tbody></table></div>
+        </div>
+      </section>
+
+      <!-- Settings -->
+      <section id="view-settings" class="view hide">
+        <div class="head"><h2>Settings</h2><p class="muted">Account, tank and display preferences.</p></div>
+        <div class="set-grid">
+          <form class="card" id="devForm" novalidate>
+            <h3>Selected tank</h3>
+            <label for="setName">Tank name</label><input id="setName" maxlength="40">
+            <label for="setThr">Alert when level falls below (%)</label><input id="setThr" type="number" min="5" max="60" step="1">
+            <p class="hint">An alert fires only when the level is strictly below this value. Exactly at the limit is not an alert.</p>
+            <div class="err" id="devErr" role="alert"></div>
+            <button class="btn primary">Save tank settings</button>
+          </form>
+          <form class="card" id="pwForm" novalidate>
+            <h3>Change password</h3>
+            <label for="pwCur">Current password</label><input id="pwCur" type="password" autocomplete="current-password">
+            <label for="pwNew">New password</label><input id="pwNew" type="password" autocomplete="new-password">
+            <div class="err" id="pwErr" role="alert"></div>
+            <button class="btn primary">Update password</button>
+          </form>
+          <div class="card">
+            <h3>Account</h3>
+            <dl class="kv"><dt>Name</dt><dd id="accName"></dd><dt>Email</dt><dd id="accEmail"></dd><dt>Member since</dt><dd id="accSince"></dd></dl>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<div id="toasts" class="toasts" aria-live="polite"></div>
+<script src="app.js"></script>
+</body>
+</html>
